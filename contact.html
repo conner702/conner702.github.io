@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width">
+          <title>Contact</title>
+          <link href="style.css" rel="stylesheet" type="text/css" />
+          <link rel="shortcut icon" type="image/png" href= "green.png" >
+          <script>
+              var validate = function(e) {
+                  var fields = document.querySelectorAll('.form-container textarea, .form-container input[type="text"]');
+                  var regEx;
+                  var removeSpan;
+                  var par;
+                  var check = false;
+                  var val;
+                  var errArr = [];
+               
+                  for (var i = 0; i < fields.length; i++) {
+                      if (fields[i].value === "") {
+                        
+                          if (fields[i].nextElementSibling.classList.contains('error')) {
+                            removeSpan = fields[i].nextElementSibling;
+                            par = fields[i].parentNode;
+                            par.removeChild(removeSpan);
+                            fields[i].nextElementSibling.innerHTML =  fields[i].placeholder + " is required?";
+                            fields[i].style.boxShadow = "0 0 2px 1px #cc0001";
+                            check = false;
+                            errArr.push(fields[i]);
+                          }
+                          fields[i].nextElementSibling.innerHTML =  fields[i].placeholder + " is required?";
+                          fields[i].style.boxShadow = "0 0 2px 1px #cc0001";
+                          check = false;
+                          errArr.push(fields[i]);
+                      } else {
+               
+                          // check if message and name values contain valid characters.
+                          if (fields[i].id !== 'email' && fields[i].id !== 'phone') {
+                              val = isValidChar(fields[i]);
+                              if(val === false) {
+                                fields[i].nextElementSibling.innerHTML = "Are you trying to HACK ME!";
+                                fields[i].style.boxShadow = "0 0 2px 1px #cc0001";
+                                check = false;
+                                errArr.push(fields[i]);
+                              } else {
+                                fields[i].nextElementSibling.innerHTML = "";
+                                fields[i].style.boxShadow = "none";
+                                check = true;
+                              }
+                          }
+                        
+                          if(fields[i].id === 'phone') {
+                            val = isValidPhone(fields[i]);
+                            if(val === false) {
+                              fields[i].nextElementSibling.innerHTML = "Your phone number is not valid?";
+                              fields[i].style.boxShadow = "0 0 2px 1px #cc0001";
+                              check = false;
+                              errArr.push(fields[i]);
+                            } else {
+                              fields[i].nextElementSibling.innerHTML = "";
+                              fields[i].style.boxShadow = "none";
+                              check = true;
+                            }
+                          }
+               
+                          if (fields[i].id === 'email') {
+                              val = isValidEmail(fields[i]);
+                              if(val === false) {
+                                  fields[i].nextElementSibling.innerHTML = "Your email address is not valid?";
+                                  fields[i].style.boxShadow = "0 0 2px 1px #cc0001";
+                                  check = false;
+                                  errArr.push(fields[i]);
+                              } else {
+                                  fields[i].nextElementSibling.innerHTML = "";
+                                  fields[i].style.boxShadow = "none";
+                                  check = true;
+                              }
+                          }
+                      }
+                  }
+                
+                  if(check === false) {
+                    var count = 0;
+                    var toErr = setInterval(function() {
+                      var e = errArr[0].offsetTop + -25;
+                      var pos = Math.abs(e);
+                      if(count < pos) {
+                        count ++;
+                        window.scrollTo(0, count);
+                      } else {
+                        clearInterval(toErr);
+                      }
+                    }, 1);
+                  }
+                  
+                  return check
+               
+                  // Helper functions.
+                  function isValidEmail(e) {
+                      regEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                      var email = e.value;
+                      if (!regEx.test(email)) {
+                          return false;
+                      }
+                  }
+               
+                  function isValidChar(e) {
+                      regEx = /^[a-zA-Z@#$%!?^&*()_+\-=\[\]{};':"\\|,.\/? ]*$/;
+                      var value = e.value;
+                      if (!regEx.test(value)) {
+                          return false;
+                      }
+                  }
+                
+                  function isValidPhone(e) {
+                    regEx = /^[+]?[(]?[+]?\d{2,4}[)]?[-\s]?\d{2,8}[-\s]?\d{2,8}$/;
+                    var value = e.value;
+                    if(!regEx.test(value)) {
+                      return false;
+                    }
+                  }
+              };
+</script>
+          
+
+</head>
+
+<body>
+    <header class="header">
+    
+    
+        <input class="menu-btn" type="checkbox" id="menu-btn" />
+        <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+        <ul class="menu">
+          <li><a href="contact.html"> Contact&nbsp;&nbsp;</a></li>
+          <li><a href="shop.html">Shop&nbsp;&nbsp; </a></li>
+          <li><a href="products.html">Products&nbsp;&nbsp;  </a></li>
+          <li><a href="about.html">About&nbsp;&nbsp; </a></li>
+        </ul>
+        
+        <a href="" class="logo"> <img src="logo.png" alt="Home" style="width: 100px; "> </a>
+    
+     
+   </header>
+ 
+   <!-- ------------
+     ^Header^
+   ----------- -->
+   <div class="form-container" style="margin-bottom: 2%; margin-left: auto; margin-right: auto;width: 80%; margin-top:20%; ">
+    <h2 style="text-align: center;">Contact Form</h2>
+    <form name="contactForm" method="post" onsubmit = "return validate()" action="#">
+      <label for="name">* Name</label>
+      <input type="text" id="name" name="name" placeholder="Your name" >
+      <span class="errors"></span><br>
+   
+      <label for="email">* Email</label>
+      <input type="text" placeholder="Email address" id="email" name="email" >
+      <span class="errors"></span><br>
+   
+      <label for="phone">* Phone</label>
+      <input type="text" placeholder="Phone number" id="phone" name="phone" >
+      <span class="errors"></span><br>
+      
+      <label for="subject">* Message</label>
+      <textarea placeholder="Your message" cols="132" rows="5" name="subject" id="subject"></textarea>
+      <span class="errors"></span><br>
+   
+      <button type="submit" value="Submit" style="width: 25%; height: 15%; margin-left: auto; margin-right: auto;">Submit</button>
+    </form>
+  </div>
+ 
+
+ 
+<!-- ------------
+  Footer
+----------- -->
+
+   
+   <footer >
+ <div class="ft">
+     
+     <div style=" float: left; width: 25%; left: 0; " >
+  <ul style="  ; width: 100%; left: 0;  text-align: center;">
+   
+      <li> <a href="home.html"> Home </a></li>
+      <li> <a href="about.html"> About </a></li>
+      <li> <a href="products.html"> Products </a></li>
+      <li> <a href="shop.html"> Shop </a> </li>
+       </ul>
+     </div>
+      
+   
+     <div style="float: right; margin-top: 0%; width: 55%;">
+       <ul style=" color: black; ; text-decoration: none; text-align: center;">
+     <li> <a href="contact.html"> Contact us </a></li>
+       <li> <a href="mailto:example@example.com"> example@example.com </a></li>
+       <li> <a href="#"> 123-456-7890 </a></li>
+         <li> <a href="https://www.instagram.com/"  target="_blank"><img  src="ig.png" alt="IG" style="width:8%; float: left; margin-left: 40%;"></a>
+         <a href="https://www.facebook.com/" target="_blank" ><img  src="fb.png" alt="FB" style="width:8%; float: right; margin-right: 40%;"></a></li>
+       </ul>
+     </div>
+       
+   
+   </div>
+
+
+  
+</footer>
+
+
+
+</body>
+
+</html>
